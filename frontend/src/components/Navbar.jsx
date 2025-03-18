@@ -19,6 +19,8 @@ const Navbar = () => {
             <Link to="/books" className="mr-4">Books</Link>
             <Link to="/tasks" className="mr-4">CRUD</Link>
             <Link to="/profile" className="mr-4">Profile</Link>
+            <Link to="/loans" className="mr-4">Loans</Link>
+
             <button
               onClick={handleLogout}
               className="bg-red-500 px-4 py-2 rounded hover:bg-red-700"
