@@ -1,29 +1,64 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import axiosInstance from '../../axiosConfig';
 
-const LoanForm = ({ setLoans }) => {
+const LoanForm = ({ loans, setLoans, editingLoan, setEditingLoan }) => {
+  const { user } = useAuth();
+
   const [formData, setFormData] = useState({
     bookId: '',
     memberId: '',
     dueDate: '',
   });
 
+  useEffect(() => {
+    if (editingLoan) {
+      setFormData({
+        bookId: editingLoan.bookId?._id || editingLoan.bookId || '',
+        memberId: editingLoan.memberId?._id || editingLoan.memberId || '',
+        dueDate: editingLoan.dueDate
+          ? editingLoan.dueDate.split('T')[0]
+          : '',
+      });
+    } else {
+      setFormData({
+        bookId: '',
+        memberId: '',
+        dueDate: '',
+      });
+    }
+  }, [editingLoan]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('/api/loans', formData);
-      setLoans((prevLoans) => [...prevLoans, res.data]);  // Update the list
-      setFormData({ bookId: '', memberId: '', dueDate: '' }); // Reset form
-      alert('Loan issued successfully');
+      const apiConfig = {
+        headers: { Authorization: `Bearer ${user.token}` },
+      };
+      let response;
+      if (editingLoan) {
+        response = await axiosInstance.put(
+          `/api/loans/${editingLoan._id}`,
+          formData,
+          apiConfig
+        );
+        setLoans(loans.map((loan) => (loan._id === response.data._id ? response.data : loan)));
+      } else {
+        response = await axiosInstance.post('/api/loans', formData, apiConfig);
+        setLoans([...loans, response.data]);
+      }
+      setEditingLoan(null);
+      setFormData({ bookId: '', memberId: '', dueDate: '' });
     } catch (error) {
-      console.error('Failed to issue loan:', error);
-      alert('Failed to issue loan');
+      alert('Failed to save loan.');
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-6 shadow-md rounded mb-6">
-      <h1 className="text-2xl font-bold mb-4">Issue a Loan</h1>
+      <h1 className="text-2xl font-bold mb-4">
+        {editingLoan ? 'Edit Loan' : 'Issue New Loan'}
+      </h1>
       <input
         type="text"
         placeholder="Book ID"
@@ -49,7 +84,7 @@ const LoanForm = ({ setLoans }) => {
         required
       />
       <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded">
-        Issue Loan
+        {editingLoan ? 'Update Loan' : 'Create Loan'}
       </button>
     </form>
   );

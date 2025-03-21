@@ -20,6 +20,13 @@ const BookList = ({ books, setBooks, setEditingBook }) => {
       {books.map((book) => (
         <div key={book._id} className="bg-gray-100 p-4 mb-4 rounded shadow">
           <h2 className="font-bold text-xl mb-2">{book.title}</h2>
+          <p className="flex items-center gap-2">
+          <strong>Book ID:</strong> <span className="font-mono text-sm">{book._id}</span>
+          <button onClick={() => {navigator.clipboard.writeText(book._id);alert('Book ID copied to clipboard!');}}className="text-sm text-blue-600 underline hover:text-blue-800">
+          Copy
+          </button>
+          </p>
+
           <p><strong>Author:</strong> {book.author}</p>
           <p><strong>ISBN:</strong> {book.isbn}</p>
           <p><strong>Genre:</strong> {book.genre || 'N/A'}</p>

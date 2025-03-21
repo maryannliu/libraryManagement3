@@ -36,7 +36,18 @@ const MemberList = ({ members, setMembers, setEditingMember }) => {
     <div>
       {members.map((member) => (
         <div key={member._id} className="bg-gray-100 p-4 mb-4 rounded shadow">
+          
+
           <h2 className="font-bold text-xl mb-2">{member.fullName}</h2>
+          <p className="flex items-center gap-2">
+
+        {/* member ID and copy button */}
+          <strong>Member ID:</strong> <span className="font-mono text-sm">{member._id}</span>
+          <button onClick={() => {navigator.clipboard.writeText(member._id); alert('Member ID copied to clipboard!');}}className="text-sm text-blue-600 underline hover:text-blue-800">
+            Copy
+          </button>
+</p>
+
           <p><strong>Email:</strong> {member.email}</p>
           <p><strong>Phone:</strong> {member.phone || 'N/A'}</p>
           <p><strong>Address:</strong> {member.address || 'N/A'}</p>
