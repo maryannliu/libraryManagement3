@@ -6,7 +6,8 @@ const MemberSchema = new mongoose.Schema({
     phone: { type: String },
     address: { type: String },
     memberSince: { type: Date, default: Date.now },
-    active: { type: Boolean, default: true }
+    active: { type: Boolean, default: true },
+    createdAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Member', MemberSchema);
