@@ -43,4 +43,3 @@ const Loans = () => {
 };
 
 export default Loans;
-ß
