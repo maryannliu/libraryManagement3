@@ -1,28 +1,93 @@
-name: CI
+name: Backend CI/CD
 
 on:
-    push:
-        branches:
-            - main
-    pull_request:
-        branches:
-            - main
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  test-and-deploy:
+    name: Run Tests and Deploy Backend
+    runs-on: self-hosted  # AWS EC2 runner
+    environment: production  # For environment grouping
 
-        steps:
-        - name: Checkout code
-            uses: actions/checkout@v2
+    strategy:
+      matrix:
+        node-version: [22]  # Node.js version from tutorial
 
-        - name: Set up Node.js
-            uses: actions/setup-node@v2
-            with:
-                node-version: '14'
+        
 
-        - name: Install dependencies
-            run: npm install
+    steps:
+    # Step 1: Checkout Code
+    - name: Checkout Code
+      uses: actions/checkout@v3
 
-        - name: Run tests
-            run: npm test
+    # Step 2: Setup Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    # Step 3: Print Environment Secrets
+    - name: Print Env Secret
+      env:
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        PORT: ${{ secrets.PORT }}
+      run: |
+        echo "MONGO_URI: $MONGO_URI"
+        echo "JWT_SECRET: $JWT_SECRET"
+        echo "PORT: $PORT"
+
+    # Step 4: Stop all PM2 services
+    - name: Stop PM2 Services
+      run: pm2 stop all || true
+
+    # Step 5: Install Backend Dependencies
+    - name: Install Backend Dependencies
+      working-directory: ./backend
+      run: |
+        npm install -g yarn
+        yarn --version
+        yarn install
+
+    
+
+    # Step 6: Install Frontend Dependencies and Build
+    - name: Install Frontend and Build
+      working-directory: ./frontend
+      run: |
+        df -h
+        sudo rm -rf ./build
+        yarn install
+        yarn run build
+
+    # Step 7: Run Backend Tests
+    - name: Run Backend Tests
+      working-directory: ./backend
+      env:
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        PORT: ${{ secrets.PORT }}
+      run: npm test
+
+    # Step 8: Clean Install (optional)
+    - name: Clean Install with npm ci
+      run: npm ci
+
+    # Step 9: Create .env from Secret
+    - name: Create .env File
+      working-directory: ./backend
+      run: |
+        touch .env
+        echo "${{ secrets.PROD }}" > .env
+
+    # Step 10: Start and Restart Backend with PM2
+    - name: Start Services
+      run: pm2 start all
+
+    - name: Restart Services
+      run: pm2 restart all
