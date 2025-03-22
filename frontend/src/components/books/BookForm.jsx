@@ -5,8 +5,6 @@ import axiosInstance from '../../axiosConfig';
 const BookForm = ({ books, setBooks, editingBook, setEditingBook }) => {
   const { user } = useAuth();
 
-  const isEditing = editingBook && editingBook._id;
-
   const [formData, setFormData] = useState({
     title: '',
     author: '',
@@ -18,7 +16,7 @@ const BookForm = ({ books, setBooks, editingBook, setEditingBook }) => {
   });
 
   useEffect(() => {
-    if (isEditing) {
+    if (editingBook) {
       setFormData({
         title: editingBook.title,
         author: editingBook.author,
@@ -50,22 +48,17 @@ const BookForm = ({ books, setBooks, editingBook, setEditingBook }) => {
         headers: { Authorization: `Bearer ${user.token}` },
       };
       let response;
-      if (isEditing) {
+      if (editingBook) {
         response = await axiosInstance.put(
           `/api/books/${editingBook._id}`,
           formData,
           apiConfig
         );
-        setBooks(
-          books.map((book) =>
-            book._id === response.data._id ? response.data : book
-          )
-        );
+        setBooks(books.map((book) => (book._id === response.data._id ? response.data : book)));
       } else {
         response = await axiosInstance.post('/api/books', formData, apiConfig);
         setBooks([...books, response.data]);
       }
-
       setEditingBook(null);
       setFormData({
         title: '',
@@ -78,19 +71,14 @@ const BookForm = ({ books, setBooks, editingBook, setEditingBook }) => {
       });
     } catch (error) {
       alert('Failed to save book.');
-      console.error(error);
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white p-6 shadow-md rounded mb-6"
-    >
+    <form onSubmit={handleSubmit} className="bg-white p-6 shadow-md rounded mb-6">
       <h1 className="text-2xl font-bold mb-4">
-        {isEditing ? 'Edit Book' : 'Add New Book'}
+        {editingBook ? 'Edit Book' : 'Add New Book'}
       </h1>
-
       <input
         type="text"
         placeholder="Title"
@@ -99,7 +87,6 @@ const BookForm = ({ books, setBooks, editingBook, setEditingBook }) => {
         className="w-full mb-4 p-2 border rounded"
         required
       />
-
       <input
         type="text"
         placeholder="Author"
@@ -108,7 +95,6 @@ const BookForm = ({ books, setBooks, editingBook, setEditingBook }) => {
         className="w-full mb-4 p-2 border rounded"
         required
       />
-
       <input
         type="text"
         placeholder="ISBN"
@@ -117,7 +103,6 @@ const BookForm = ({ books, setBooks, editingBook, setEditingBook }) => {
         className="w-full mb-4 p-2 border rounded"
         required
       />
-
       <input
         type="text"
         placeholder="Genre"
@@ -125,72 +110,32 @@ const BookForm = ({ books, setBooks, editingBook, setEditingBook }) => {
         onChange={(e) => setFormData({ ...formData, genre: e.target.value })}
         className="w-full mb-4 p-2 border rounded"
       />
-
       <input
         type="number"
         placeholder="Copies Available"
         value={formData.copiesAvailable}
-        onChange={(e) =>
-          setFormData({
-            ...formData,
-            copiesAvailable: parseInt(e.target.value),
-          })
-        }
+        onChange={(e) => setFormData({ ...formData, copiesAvailable: parseInt(e.target.value) })}
         className="w-full mb-4 p-2 border rounded"
         required
       />
-
       <input
         type="number"
         placeholder="Total Copies"
         value={formData.totalCopies}
-        onChange={(e) =>
-          setFormData({
-            ...formData,
-            totalCopies: parseInt(e.target.value),
-          })
-        }
+        onChange={(e) => setFormData({ ...formData, totalCopies: parseInt(e.target.value) })}
         className="w-full mb-4 p-2 border rounded"
         required
       />
-
       <input
         type="date"
         placeholder="Published Date"
         value={formData.publishedDate}
-        onChange={(e) =>
-          setFormData({ ...formData, publishedDate: e.target.value })
-        }
+        onChange={(e) => setFormData({ ...formData, publishedDate: e.target.value })}
         className="w-full mb-4 p-2 border rounded"
       />
-
-      <button
-        type="submit"
-        className="w-full bg-blue-600 text-white p-2 rounded"
-      >
-        {isEditing ? 'Update Book' : 'Create Book'}
+      <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded">
+        {editingBook ? 'Update Book' : 'Create Book'}
       </button>
-
-      {isEditing && (
-        <button
-          type="button"
-          onClick={() => {
-            setEditingBook(null);
-            setFormData({
-              title: '',
-              author: '',
-              isbn: '',
-              genre: '',
-              copiesAvailable: 1,
-              totalCopies: 1,
-              publishedDate: '',
-            });
-          }}
-          className="w-full mt-2 bg-gray-500 text-white p-2 rounded"
-        >
-          Cancel
-        </button>
-      )}
     </form>
   );
 };
