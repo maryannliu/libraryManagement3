@@ -7,9 +7,9 @@ import BookList from '../components/books/BookList';
 
 const Books = () => {
   const { user } = useAuth();
-  const [books, setBooks] = useState([]); // always starts as an array
+  const [books, setBooks] = useState([]);
   const [editingBook, setEditingBook] = useState(null);
-  const [loading, setLoading] = useState(true); // for loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -18,26 +18,22 @@ const Books = () => {
           headers: { Authorization: `Bearer ${user.token}` },
         });
 
-        console.log('Books API response:', res.data);
+        const data = Array.isArray(res.data) ? res.data : [];
+        setBooks(data);
 
-        setBooks(Array.isArray(res.data) ? res.data : []); // defensive assignment
-        setLoading(false);
+        if (data.length === 0) {
+          setEditingBook({}); // Trigger book creation form
+        }
       } catch (error) {
         console.error('Error fetching books:', error);
         setBooks([]);
+      } finally {
         setLoading(false);
       }
     };
 
     fetchBooks();
   }, [user.token]);
-
-  // Show form if there are no books
-  useEffect(() => {
-    if (Array.isArray(books) && books.length === 0) {
-      setEditingBook({}); // open the create form
-    }
-  }, [books]);
 
   return (
     <div className="container mx-auto p-4">
