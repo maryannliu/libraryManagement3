@@ -1,68 +1,124 @@
 # **Assignment: Full-Stack CRUD Application Development with DevOps Practices**
 
-## **Objective**
+# 📚 Library Management System
 
-You have been provided with a starter project that includes user authentication using  **Node.js, React.js, and MongoDB**. Your task is to extend this application by implementing **CRUD (Create, Read, Update, Delete) operations** for a real-world application of your choice, while following industry best practices such as:
+A full-stack CRUD application built with Node.js, Express, MongoDB, and React for managing books, members, and loans in a library. Includes user authentication and a CI/CD pipeline for deployment.
 
-* **Project Management with JIRA**
-* **Requirement Diagram using SysML**
-* **Version Control using GitHub**
-* **CI/CD Integration for Automated Deployment**
+---
 
-## **Requirements**
+## 📝 Table of Contents
 
-### **1. Choose a Real-World Application**
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Setup Instructions](#setup-instructions)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [CI/CD Pipeline](#cicd-pipeline)
+- [JIRA Board](#jira-board)
+- [License](#license)
+- [References](#references)
 
-Select a meaningful use case for your CRUD operations. We will provide the list, you have to select it.
+---
 
-### **2. Project Management with JIRA and SysML**
+## 🚀 Features
 
-* Create a **JIRA project** and define:
-  * **Epic**
-  * **User Stories** (features required in your app)
-  * **Child issues & Subtasks** (breaking down development work)
-  * **Sprint Planning** (organizing work into milestones)
-* Document your JIRA **board URL** in the project README.
-* Draw a requirements diagram
+- User authentication with JWT
+- CRUD operations for:
+  - 📖 Books
+  - 👥 Members
+  - 🔁 Loans
+- Role-based access control
+- Mongoose schemas with validations
+- RESTful API using Express
+- CI/CD using GitHub Actions
+- Deployed backend and frontend to AWS EC2
 
-### **3. Backend Development (Node.js + Express + MongoDB)**
+---
 
-* Create a user-friendly interface to interact with your API (Some portion developed, follow task manager app)).
-* Implement **forms** for adding and updating records.
-* Display data using  **tables, cards, or lists (Follow how we showed data in task manager app)**
+## 🛠️ Tech Stack
 
-### **4. Frontend Development (React.js)**
+**Frontend:** React.js  
+**Backend:** Node.js, Express.js  
+**Database:** MongoDB  
+**Auth:** JWT  
+**Deployment:** GitHub Actions, AWS EC2  
+**Version Control:** Git + GitHub
 
-* Create a user-friendly interface to interact with your API (**Some portion developed, follow task manager app)**.
-* Implement **forms** for adding, showing, deleting and updating records (CRUD).
-* Display data using  **tables, cards, or lists (Follow how we showed data in task manager app)**
+---
 
-### **5. Authentication & Authorization**
+## 🧰 Setup Instructions
 
-* Ensure **only authenticated users** can access and perform CRUD operations. (Already developed in your project)
-* Use **JWT (JSON Web Tokens)** for user authentication (Use the task manager one from .env file).
+### 1. Clone the Repository
 
-### **6. GitHub Version Control & Branching Strategy**
+```bash
+git clone https://github.com/YOUR-USERNAME/library-management-system.git
+cd library-management-system
+```
 
-* Use **GitHub for version control** and maintain:
-  * `main` branch (stable production-ready code)
-  * Feature branches (`feature/xyz`) for each new functionality
-* Follow proper **commit messages** and  **pull request (PR) reviews** .
+### 2. Backend Setup
 
-### **7. CI/CD Pipeline Setup**
+```bash
+cd backend
+npm install
+cp .env.example .env  # Add your MongoDB URI and JWT_SECRET
+npm run dev
+```
 
-* Implement a **CI/CD pipeline using GitHub Actions** to:
-  * Automatically **run tests** on every commit/pull request (Optional).
-  * Deploy the **backend** to **AWS** .
-  * Deploy the **frontend** to **AWS**.
-* Document your  **CI/CD workflow in the README** .
+### 3. Frontend Setup
 
-## **Submission Requirements**
+```bash
+cd frontend
+npm install
+npm start
+```
 
-* **JIRA Project Board URL** (user stories ).
-* **Requirment diagram** (Using project features)
-* **GitHub Repository** (`backend/` and `frontend/`).
-* **README.md** with:
+---
 
-  * Project setup instructions.
-  * CI/CD pipeline details.
+## ✅ Usage
+
+- Register/login as a user
+- Add, update, or delete books, members, and loans
+- View active loans and return books
+- Authentication required for all protected routes
+
+---
+
+## 📂 Project Structure
+
+```
+/backend
+  /controllers
+  /models
+  /routes
+  server.js
+/frontend
+  /components
+  /pages
+  App.js
+README.md
+```
+
+---
+
+## ⚙️ CI/CD Pipeline
+
+- GitHub Actions configured to:
+  - Run backend tests
+  - Build and deploy backend and frontend to AWS EC2
+- See `.github/workflows/` for full pipeline configs
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 📚 References
+
+OpenAI. (2025). *Debugging assistance for Library Management System backend and test cases* [Large language model]. ChatGPT. https://chat.openai.com/
+
+Software Freedom Conservancy. (n.d.). *Git documentation*. Git. https://git-scm.com/docs
+
+Amazon Web Services. (n.d.). *Amazon EC2 documentation*. https://docs.aws.amazon.com/ec2/?icmpid=docs_homepage_featuredsvcs
