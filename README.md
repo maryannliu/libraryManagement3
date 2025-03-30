@@ -9,7 +9,6 @@ A full-stack CRUD application built with Node.js, Express, MongoDB, and React fo
 ## 📝 Table of Contents
 
 - [Features](#features)
-- [Tech Stack](#tech-stack)
 - [Setup Instructions](#setup-instructions)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
@@ -47,7 +46,7 @@ cd library-management-system
 ```bash
 cd backend
 npm install
-cp .env.example .env  # Add your MongoDB URI and JWT_SECRET
+cp .env  
 npm run dev
 ```
 
