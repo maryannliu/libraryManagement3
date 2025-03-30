@@ -13,8 +13,6 @@ A full-stack CRUD application built with Node.js, Express, MongoDB, and React fo
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [CI/CD Pipeline](#cicd-pipeline)
-- [JIRA Board](#jira-board)
-- [License](#license)
 - [References](#references)
 
 ---
@@ -37,8 +35,8 @@ A full-stack CRUD application built with Node.js, Express, MongoDB, and React fo
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/library-management-system.git
-cd library-management-system
+git clone https://github.com/maryannliu/libraryManagement3.git
+cd libraryManagement3
 ```
 
 ### 2. Backend Setup
@@ -91,7 +89,6 @@ README.md
 - GitHub Actions configured to:
   - Run backend tests
   - Build and deploy backend and frontend to AWS EC2
-- See `.github/workflows/` for full pipeline configs
 
 ---
 
