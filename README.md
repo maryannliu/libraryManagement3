@@ -24,25 +24,12 @@ A full-stack CRUD application built with Node.js, Express, MongoDB, and React fo
 
 - User authentication with JWT
 - CRUD operations for:
-  - 📖 Books
-  - 👥 Members
-  - 🔁 Loans
-- Role-based access control
+  - Books
+  - Members
+  - Loans
 - Mongoose schemas with validations
-- RESTful API using Express
 - CI/CD using GitHub Actions
 - Deployed backend and frontend to AWS EC2
-
----
-
-## 🛠️ Tech Stack
-
-**Frontend:** React.js  
-**Backend:** Node.js, Express.js  
-**Database:** MongoDB  
-**Auth:** JWT  
-**Deployment:** GitHub Actions, AWS EC2  
-**Version Control:** Git + GitHub
 
 ---
 
@@ -106,12 +93,6 @@ README.md
   - Run backend tests
   - Build and deploy backend and frontend to AWS EC2
 - See `.github/workflows/` for full pipeline configs
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License.
 
 ---
 
